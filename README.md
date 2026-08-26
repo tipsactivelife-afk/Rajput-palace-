@@ -38,9 +38,11 @@ Fill in `.env.local`:
 |---|---|---|
 | `NEXT_PUBLIC_SUPABASE_URL` | For live data | From Supabase → Project Settings → API |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | For live data | Public anon key only — never the service role key |
-| `NEXT_PUBLIC_HOTEL_PHONE` | Once available | Enables the "Call Now" buttons |
-| `NEXT_PUBLIC_HOTEL_WHATSAPP` | Once available | Digits + country code, no `+`, e.g. `919876543210` |
-| `NEXT_PUBLIC_HOTEL_EMAIL` | Once available | Enables the contact email link |
+| `NEXT_PUBLIC_HOTEL_PHONE` | Optional | Overrides the default hotel phone number set in `src/lib/hotel-config.ts` |
+| `NEXT_PUBLIC_HOTEL_WHATSAPP` | Optional | Overrides the default WhatsApp number |
+| `NEXT_PUBLIC_HOTEL_EMAIL` | Optional | Overrides the default hotel email |
+| `RESEND_API_KEY` | For booking email alerts | From [resend.com](https://resend.com) — free tier. Enables an email to the hotel on every new booking enquiry. |
+| `RESEND_FROM_EMAIL` | Optional | A verified sender address; defaults to `onboarding@resend.dev` if left blank |
 | `NEXT_PUBLIC_GOOGLE_MAPS_URL` | Optional | A specific Maps share link; otherwise built automatically from the address (no paid API key needed) |
 | `NEXT_PUBLIC_SITE_URL` | For deployment | Your production domain, used in SEO/sitemap |
 | `SUPABASE_SERVICE_ROLE_KEY` | For the admin panel | Secret key from Supabase → Project Settings → API. Never exposed to the browser. |
@@ -180,9 +182,8 @@ server-side route handlers that are themselves gated by the login cookie.
 
 ## Hotel information still required from the owner
 
-- [ ] Phone number
-- [ ] WhatsApp number
-- [ ] Email address
+- [x] Phone number — `+91 96217 42333` (also used for WhatsApp)
+- [x] Email address — `singhanil9730@gmail.com` (booking notifications go here)
 - [ ] Confirmed list of amenities actually available
 - [ ] Real room names, descriptions, bed types, capacities, and (if desired) prices
 - [ ] Real photography for rooms, exterior, interiors, and gallery
