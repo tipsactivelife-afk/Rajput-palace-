@@ -38,13 +38,17 @@ export function Header() {
     <header
       className={cn(
         "sticky top-0 z-50 w-full transition-all duration-300",
-        scrolled ? "bg-ivory/95 backdrop-blur shadow-[var(--shadow-soft)]" : "bg-ivory/70 backdrop-blur-sm",
+        // Always a solid-enough background so nav text/icons stay readable
+        // over any hero image behind it — not just after scrolling.
+        scrolled ? "bg-ivory/95 backdrop-blur shadow-[var(--shadow-soft)]" : "bg-ivory/90 backdrop-blur-sm",
       )}
     >
-      <div className="container-px mx-auto flex max-w-7xl items-center justify-between py-4">
-        <Link href="/" className="flex items-baseline gap-2">
-          <span className="font-display text-xl md:text-2xl text-maroon">Rajput Palace</span>
-          <span className="hidden md:inline eyebrow text-charcoal-soft">Ayodhya</span>
+      <div className="container-px mx-auto flex h-16 max-w-7xl items-center justify-between">
+        <Link href="/" className="flex items-baseline gap-2 min-w-0">
+          <span className="font-display text-lg sm:text-xl md:text-2xl text-maroon truncate">
+            Rajput Palace
+          </span>
+          <span className="hidden md:inline eyebrow text-charcoal-soft shrink-0">Ayodhya</span>
         </Link>
 
         <nav className="hidden lg:flex items-center gap-8">
@@ -75,18 +79,22 @@ export function Header() {
           onClick={() => setOpen((v) => !v)}
           aria-label={open ? "Close menu" : "Open menu"}
           aria-expanded={open}
-          className="lg:hidden inline-flex h-10 w-10 items-center justify-center rounded-full border border-stone text-maroon"
+          className="lg:hidden inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-maroon/30 bg-ivory text-maroon shadow-sm"
         >
           {open ? <CloseIcon /> : <MenuIcon />}
         </button>
       </div>
 
-      {/* Mobile drawer */}
+      {/* Mobile drawer — anchored to the header's own height (h-16 = 4rem)
+          instead of a hard-coded pixel value, and sized with 100dvh so it
+          never shifts or leaves a gap when the mobile browser's address
+          bar shows/hides while scrolling. */}
       <div
         className={cn(
-          "lg:hidden fixed inset-0 top-[64px] z-40 bg-ivory transition-transform duration-300 ease-out",
+          "lg:hidden fixed left-0 right-0 top-16 z-40 overflow-y-auto bg-ivory transition-transform duration-300 ease-out",
           open ? "translate-x-0" : "translate-x-full pointer-events-none",
         )}
+        style={{ height: "calc(100dvh - 4rem)" }}
       >
         <nav className="flex flex-col gap-1 p-6">
           {NAV_LINKS.map((link) => (
