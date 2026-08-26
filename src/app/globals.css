@@ -45,6 +45,15 @@
 
 html {
   scroll-behavior: smooth;
+  /* Reserve the scrollbar's width up front so the page never shifts
+     sideways when the mobile menu toggles body scroll on/off. */
+  scrollbar-gutter: stable;
+}
+
+html,
+body {
+  overflow-x: hidden;
+  max-width: 100%;
 }
 
 @media (prefers-reduced-motion: reduce) {
