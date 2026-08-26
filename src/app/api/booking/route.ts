@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
+import { notifyNewBooking } from "@/lib/notify-booking";
 import type { BookingInquiry } from "@/lib/types";
 
 function isValidDate(value: unknown): value is string {
@@ -59,6 +60,9 @@ export async function POST(request: Request) {
     console.warn(
       "[booking] Supabase is not configured — inquiry was not persisted. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY.",
     );
+    // Still email the hotel so the enquiry isn't lost even before
+    // Supabase is connected.
+    await notifyNewBooking(inquiry);
     return NextResponse.json({ ok: true, persisted: false });
   }
 
@@ -72,6 +76,10 @@ export async function POST(request: Request) {
       { status: 500 },
     );
   }
+
+  // Best-effort email to the hotel's official inbox — never blocks or
+  // fails the guest's booking confirmation.
+  await notifyNewBooking(inquiry);
 
   return NextResponse.json({ ok: true, persisted: true });
 }
