@@ -43,6 +43,9 @@ Fill in `.env.local`:
 | `NEXT_PUBLIC_HOTEL_EMAIL` | Once available | Enables the contact email link |
 | `NEXT_PUBLIC_GOOGLE_MAPS_URL` | Optional | A specific Maps share link; otherwise built automatically from the address (no paid API key needed) |
 | `NEXT_PUBLIC_SITE_URL` | For deployment | Your production domain, used in SEO/sitemap |
+| `SUPABASE_SERVICE_ROLE_KEY` | For the admin panel | Secret key from Supabase → Project Settings → API. Never exposed to the browser. |
+| `ADMIN_PASSWORD` | For the admin panel | The password used to sign in at `/admin/login`. |
+| `ADMIN_SESSION_SECRET` | For the admin panel | Any long random string (e.g. `openssl rand -hex 32`), used to sign the login session cookie. |
 
 **Never commit `.env.local` or a service role key to GitHub.**
 
@@ -139,6 +142,34 @@ automatically, with lazy loading and a graceful fallback if a URL ever breaks.
 ## Environment variables — full list
 
 See [`.env.example`](./.env.example) for the definitive list with comments.
+
+## Admin panel (`/admin`)
+
+A password-protected admin panel is included for day-to-day content management,
+backed by Supabase (using the service role key, server-side only):
+
+- **`/admin/login`** — sign in with `ADMIN_PASSWORD`.
+- **`/admin`** — dashboard overview (booking count, rooms, gallery, testimonials).
+- **`/admin/bookings`** — view every booking enquiry and update its status
+  (new / contacted / confirmed / cancelled), or delete one.
+- **`/admin/rooms`** — add, edit, hide, or delete room types.
+- **`/admin/gallery`** — add, edit, hide, or delete gallery photos.
+- **`/admin/testimonials`** — add, edit, or delete guest testimonials (only ever
+  add real, verifiable reviews).
+- **`/admin/settings`** — edit the hotel's stored contact details in Supabase.
+
+To enable it, set `SUPABASE_SERVICE_ROLE_KEY`, `ADMIN_PASSWORD`, and
+`ADMIN_SESSION_SECRET` in your environment variables (locally in `.env.local`,
+and in Vercel → Project Settings → Environment Variables for production), then
+redeploy. Until these are set, `/admin` routes will show a clear
+"not configured" message instead of crashing.
+
+The admin panel uses a single shared password (no individual user accounts) —
+appropriate for one or two people managing the site. It is fully separate from
+guest-facing Supabase access: guests only ever use the public `anon` key
+(read active content, submit booking enquiries); the admin panel is the only
+part of the app that uses the more powerful service role key, and only from
+server-side route handlers that are themselves gated by the login cookie.
 
 ## Demo data to replace before launch
 
