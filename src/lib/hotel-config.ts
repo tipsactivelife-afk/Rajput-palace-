@@ -1,11 +1,19 @@
 // Central, environment-driven configuration for Rajput Palace.
-// Nothing here is hard-coded that shouldn't be — phone, WhatsApp and
-// email are NOT confirmed yet, so they stay empty until the owner
-// provides them via environment variables (see .env.example).
+// Real phone/WhatsApp/email confirmed by the owner are set as the
+// default fallback below, so the site works out of the box even before
+// Vercel environment variables are configured. Setting the matching
+// NEXT_PUBLIC_* env var always overrides the default, in case the
+// number/email ever changes later.
 
 function cleanEnv(value: string | undefined): string {
   return (value ?? "").trim();
 }
+
+// Owner-confirmed contact details (the same number is used for both
+// phone calls and WhatsApp).
+const DEFAULT_PHONE = "+91 96217 42333";
+const DEFAULT_WHATSAPP = "919621742333";
+const DEFAULT_EMAIL = "singhanil9730@gmail.com";
 
 export const hotelConfig = {
   name: "Rajput Palace",
@@ -14,11 +22,9 @@ export const hotelConfig = {
   country: "India",
   address: "Near Sabji Mandi, Sapt Sagar Colony, Ayodhya, Uttar Pradesh, India",
 
-  // NOT YET PROVIDED by the hotel owner — left blank on purpose.
-  // Add these in .env.local / Vercel project settings once available.
-  phone: cleanEnv(process.env.NEXT_PUBLIC_HOTEL_PHONE),
-  whatsapp: cleanEnv(process.env.NEXT_PUBLIC_HOTEL_WHATSAPP),
-  email: cleanEnv(process.env.NEXT_PUBLIC_HOTEL_EMAIL),
+  phone: cleanEnv(process.env.NEXT_PUBLIC_HOTEL_PHONE) || DEFAULT_PHONE,
+  whatsapp: cleanEnv(process.env.NEXT_PUBLIC_HOTEL_WHATSAPP) || DEFAULT_WHATSAPP,
+  email: cleanEnv(process.env.NEXT_PUBLIC_HOTEL_EMAIL) || DEFAULT_EMAIL,
 
   // Optional — falls back to a plain search link built from the address
   // so "Get Directions" always works, even before a dedicated Maps URL
