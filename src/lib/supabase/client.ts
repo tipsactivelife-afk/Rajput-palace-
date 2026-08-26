@@ -1,26 +1,53 @@
 "use client";
 
-import { createClient, type SupabaseClient } from "@supabase/supabase-js";
+import {
+  createClient,
+  type SupabaseClient,
+} from "@supabase/supabase-js";
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL?.trim();
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.trim();
 
 /**
- * Browser Supabase client, safe to use in Client Components.
- * Only ever uses the public anon key — never the service role key.
- *
- * Returns `null` when Supabase env vars are not configured yet, so the
- * rest of the site can gracefully fall back to demo data instead of
- * crashing during local development or before the owner connects Supabase.
+ * Browser Supabase client.
+ * Returns null instead of throwing if Supabase is not configured or the URL
+ * is invalid, so a configuration problem cannot crash the UI.
  */
 export function getSupabaseBrowserClient(): SupabaseClient | null {
   if (!supabaseUrl || !supabaseAnonKey) {
     return null;
   }
-  return createClient(supabaseUrl, supabaseAnonKey, {
-    auth: { persistSession: false },
-  });
+
+  try {
+    const parsedUrl = new URL(supabaseUrl);
+
+    if (
+      parsedUrl.protocol !== "https:" &&
+      parsedUrl.protocol !== "http:"
+    ) {
+      console.error("[supabase] Invalid Supabase URL protocol.");
+      return null;
+    }
+
+    return createClient(
+      parsedUrl.toString().replace(/\/$/, ""),
+      supabaseAnonKey,
+      {
+        auth: {
+          persistSession: false,
+        },
+      }
+    );
+  } catch (error) {
+    console.error(
+      "[supabase] Could not create browser client. Check Supabase environment variables.",
+      error instanceof Error ? error.message : error
+    );
+
+    return null;
+  }
 }
 
-export const isSupabaseConfigured = Boolean(supabaseUrl && supabaseAnonKey);
-
+export const isSupabaseConfigured = Boolean(
+  supabaseUrl && supabaseAnonKey
+);
