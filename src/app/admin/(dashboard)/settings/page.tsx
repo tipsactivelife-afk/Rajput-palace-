@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import type { HotelSettings } from "@/lib/types";
+import { ImageUploadField } from "@/components/admin/ImageUploadField";
 
 type SettingsForm = {
   hotel_name: string;
@@ -11,6 +12,7 @@ type SettingsForm = {
   email: string;
   google_maps_url: string;
   description: string;
+  hero_image: string;
 };
 
 const EMPTY_FORM: SettingsForm = {
@@ -21,6 +23,7 @@ const EMPTY_FORM: SettingsForm = {
   email: "",
   google_maps_url: "",
   description: "",
+  hero_image: "",
 };
 
 export default function AdminSettingsPage() {
@@ -46,6 +49,7 @@ export default function AdminSettingsPage() {
             email: s.email || "",
             google_maps_url: s.google_maps_url || "",
             description: s.description || "",
+            hero_image: s.hero_image || "",
           });
         }
       } catch (e) {
@@ -93,6 +97,11 @@ export default function AdminSettingsPage() {
 
       {loaded && (
         <div className="mt-6 rounded-2xl border border-stone bg-white p-6 space-y-4">
+          <ImageUploadField
+            label="Homepage banner photo (shown behind the main title)"
+            value={form.hero_image}
+            onChange={(url) => setForm((f) => ({ ...f, hero_image: url }))}
+          />
           <Field label="Hotel name">
             <input className="input" value={form.hotel_name} onChange={(e) => setForm((f) => ({ ...f, hotel_name: e.target.value }))} />
           </Field>
