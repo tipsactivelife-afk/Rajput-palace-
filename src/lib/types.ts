@@ -52,6 +52,7 @@ export interface HotelSettings {
   email: string | null;
   google_maps_url: string | null;
   description: string | null;
+  hero_image: string | null;
   updated_at: string;
 }
 
