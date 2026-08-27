@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { hotelConfig, isEmailConfigured, isPhoneConfigured, getTelHref, getMailHref } from "@/lib/hotel-config";
 
 const EXPLORE_LINKS = [
@@ -23,7 +24,10 @@ export function Footer() {
     <footer className="bg-maroon-deep text-ivory">
       <div className="container-px mx-auto max-w-7xl py-14 grid grid-cols-1 md:grid-cols-4 gap-10">
         <div>
-          <span className="font-display text-2xl">Rajput Palace</span>
+          <div className="flex items-center gap-2.5">
+            <Image src="/logo.png" alt="Rajput Palace" width={36} height={36} className="h-9 w-9 rounded-full" />
+            <span className="font-display text-2xl">Rajput Palace</span>
+          </div>
           <p className="mt-3 text-sm text-ivory/70 leading-relaxed">{hotelConfig.address}</p>
         </div>
 
