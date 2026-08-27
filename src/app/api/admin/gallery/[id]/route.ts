@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { requireAdminSupabase } from "@/lib/admin-api-helpers";
 import type { GalleryItem } from "@/lib/types";
 
@@ -22,6 +23,7 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
 
   const { data, error } = await supabase.from("gallery").update(updates).eq("id", id).select().single();
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+  revalidatePath("/gallery");
   return NextResponse.json({ item: data as GalleryItem });
 }
 
@@ -32,6 +34,6 @@ export async function DELETE(_request: Request, { params }: { params: Promise<{ 
 
   const { error } = await supabase.from("gallery").delete().eq("id", id);
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+  revalidatePath("/gallery");
   return NextResponse.json({ ok: true });
 }
-
