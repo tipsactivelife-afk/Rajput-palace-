@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { requireAdminSupabase } from "@/lib/admin-api-helpers";
 import type { HotelSettings } from "@/lib/types";
 
@@ -38,6 +39,7 @@ export async function PATCH(request: Request) {
     "email",
     "google_maps_url",
     "description",
+    "hero_image",
   ] as const) {
     if (body[key] !== undefined) updates[key] = body[key];
   }
@@ -45,6 +47,7 @@ export async function PATCH(request: Request) {
   if (!existing) {
     const { data, error } = await supabase.from("hotel_settings").insert(updates).select().single();
     if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+    revalidatePath("/");
     return NextResponse.json({ settings: data as HotelSettings });
   }
 
@@ -55,6 +58,6 @@ export async function PATCH(request: Request) {
     .select()
     .single();
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+  revalidatePath("/");
   return NextResponse.json({ settings: data as HotelSettings });
 }
-
