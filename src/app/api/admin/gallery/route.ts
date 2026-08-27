@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { requireAdminSupabase } from "@/lib/admin-api-helpers";
 import type { GalleryItem } from "@/lib/types";
 
@@ -46,6 +47,6 @@ export async function POST(request: Request) {
     .single();
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+  revalidatePath("/gallery");
   return NextResponse.json({ item: data as GalleryItem }, { status: 201 });
 }
-
