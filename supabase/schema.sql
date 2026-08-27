@@ -77,8 +77,12 @@ create table if not exists public.hotel_settings (
   email            text,
   google_maps_url  text,
   description      text,
+  hero_image       text,
   updated_at       timestamptz not null default now()
 );
+
+-- Safe to re-run even if the table already existed without this column.
+alter table public.hotel_settings add column if not exists hero_image text;
 
 -- ─────────────────────────────────────────────
 -- gallery
