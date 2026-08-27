@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { requireAdminSupabase } from "@/lib/admin-api-helpers";
 import type { Room } from "@/lib/types";
 
@@ -34,6 +35,9 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
 
   const { data, error } = await supabase.from("rooms").update(updates).eq("id", id).select().single();
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+  revalidatePath("/");
+  revalidatePath("/rooms");
+  revalidatePath(`/rooms/${data.slug}`);
   return NextResponse.json({ room: data as Room });
 }
 
@@ -44,6 +48,7 @@ export async function DELETE(_request: Request, { params }: { params: Promise<{ 
 
   const { error } = await supabase.from("rooms").delete().eq("id", id);
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+  revalidatePath("/");
+  revalidatePath("/rooms");
   return NextResponse.json({ ok: true });
 }
-
