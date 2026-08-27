@@ -11,7 +11,7 @@ function cleanEnv(value: string | undefined): string {
 
 // Owner-confirmed contact details (the same number is used for both
 // phone calls and WhatsApp).
-const DEFAULT_PHONE = "+91 96217 42333";
+const DEFAULT_PHONE = "+91 84180 23310";
 const DEFAULT_WHATSAPP = "919621742333";
 const DEFAULT_EMAIL = "singhanil9730@gmail.com";
 
