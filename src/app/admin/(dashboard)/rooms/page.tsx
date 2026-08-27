@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import type { Room } from "@/lib/types";
 import { ImageUploadField } from "@/components/admin/ImageUploadField";
+import { RoomImagesManager } from "@/components/admin/RoomImagesManager";
 
 type RoomForm = {
   name: string;
@@ -198,10 +199,12 @@ export default function AdminRoomsPage() {
           </div>
 
           <ImageUploadField
-            label="Featured image"
+            label="Featured image (main photo shown on room cards)"
             value={form.featured_image}
             onChange={(url) => setForm((f) => ({ ...f, featured_image: url }))}
           />
+
+          {editingId !== "new" && <RoomImagesManager roomId={editingId} />}
 
           <Field label="Short description (used on cards)">
             <input
