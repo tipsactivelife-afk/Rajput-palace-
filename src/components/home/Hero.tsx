@@ -3,12 +3,12 @@ import { ImageFallback } from "@/components/ui/ImageFallback";
 import { CallButton } from "@/components/ui/CallButton";
 import { WhatsAppButton } from "@/components/ui/WhatsAppButton";
 
-export function Hero() {
+export function Hero({ heroImage }: { heroImage?: string | null }) {
   return (
     <section className="relative overflow-hidden bg-maroon-deep">
       <div className="absolute inset-0">
         <ImageFallback
-          src={null}
+          src={heroImage}
           alt="Rajput Palace, Ayodhya — hotel exterior at dusk"
           label="Rajput Palace, Ayodhya"
           className="h-full w-full"
