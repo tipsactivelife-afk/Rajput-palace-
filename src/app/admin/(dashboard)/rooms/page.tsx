@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import type { Room } from "@/lib/types";
+import { ImageUploadField } from "@/components/admin/ImageUploadField";
 
 type RoomForm = {
   name: string;
@@ -194,14 +195,13 @@ export default function AdminRoomsPage() {
                 onChange={(e) => setForm((f) => ({ ...f, bed_type: e.target.value }))}
               />
             </Field>
-            <Field label="Featured image URL">
-              <input
-                className="input"
-                value={form.featured_image}
-                onChange={(e) => setForm((f) => ({ ...f, featured_image: e.target.value }))}
-              />
-            </Field>
           </div>
+
+          <ImageUploadField
+            label="Featured image"
+            value={form.featured_image}
+            onChange={(url) => setForm((f) => ({ ...f, featured_image: url }))}
+          />
 
           <Field label="Short description (used on cards)">
             <input
@@ -314,4 +314,3 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
     </label>
   );
 }
-
