@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
@@ -44,11 +45,21 @@ export function Header() {
       )}
     >
       <div className="container-px mx-auto flex h-16 max-w-7xl items-center justify-between">
-        <Link href="/" className="flex items-baseline gap-2 min-w-0">
-          <span className="font-display text-lg sm:text-xl md:text-2xl text-maroon truncate">
-            Rajput Palace
+        <Link href="/" className="flex items-center gap-2.5 min-w-0">
+          <Image
+            src="/logo.png"
+            alt="Rajput Palace"
+            width={40}
+            height={40}
+            priority
+            className="h-9 w-9 sm:h-10 sm:w-10 shrink-0 rounded-full"
+          />
+          <span className="flex items-baseline gap-2 min-w-0">
+            <span className="font-display text-lg sm:text-xl md:text-2xl text-maroon truncate">
+              Rajput Palace
+            </span>
+            <span className="hidden md:inline eyebrow text-charcoal-soft shrink-0">Ayodhya</span>
           </span>
-          <span className="hidden md:inline eyebrow text-charcoal-soft shrink-0">Ayodhya</span>
         </Link>
 
         <nav className="hidden lg:flex items-center gap-8">
