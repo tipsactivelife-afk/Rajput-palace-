@@ -1,6 +1,12 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { requireAdminSupabase } from "@/lib/admin-api-helpers";
 import type { Room } from "@/lib/types";
+
+function revalidateRoomPages() {
+  revalidatePath("/");
+  revalidatePath("/rooms");
+}
 
 export async function GET() {
   const { supabase, errorResponse } = requireAdminSupabase();
@@ -46,6 +52,6 @@ export async function POST(request: Request) {
     .single();
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+  revalidateRoomPages();
   return NextResponse.json({ room: data as Room }, { status: 201 });
 }
-
