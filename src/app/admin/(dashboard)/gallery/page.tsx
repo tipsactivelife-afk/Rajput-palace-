@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import type { GalleryItem } from "@/lib/types";
+import { ImageUploadField } from "@/components/admin/ImageUploadField";
 
 const CATEGORIES: GalleryItem["category"][] = [
   "Hotel",
@@ -151,9 +152,6 @@ export default function AdminGalleryPage() {
                 ))}
               </select>
             </Field>
-            <Field label="Image URL (host on Supabase Storage or elsewhere)">
-              <input className="input" value={form.image_url} onChange={(e) => setForm((f) => ({ ...f, image_url: e.target.value }))} />
-            </Field>
             <Field label="Alt text">
               <input className="input" value={form.alt_text} onChange={(e) => setForm((f) => ({ ...f, alt_text: e.target.value }))} />
             </Field>
@@ -161,6 +159,11 @@ export default function AdminGalleryPage() {
               <input className="input" type="number" value={form.sort_order} onChange={(e) => setForm((f) => ({ ...f, sort_order: e.target.value }))} />
             </Field>
           </div>
+          <ImageUploadField
+            label="Photo"
+            value={form.image_url}
+            onChange={(url) => setForm((f) => ({ ...f, image_url: url }))}
+          />
           <label className="flex items-center gap-2 text-sm text-charcoal">
             <input type="checkbox" checked={form.is_active} onChange={(e) => setForm((f) => ({ ...f, is_active: e.target.checked }))} />
             Visible on the website
@@ -228,4 +231,3 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
     </label>
   );
 }
-
