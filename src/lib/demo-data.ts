@@ -24,6 +24,7 @@ export const demoHotelSettings: HotelSettings = {
   google_maps_url: hotelConfig.googleMapsUrl || null,
   description:
     "A premium and comfortable stay in Ayodhya for pilgrims, families, couples, tourists and business travellers.",
+  hero_image: null,
   updated_at: new Date().toISOString(),
 };
 
